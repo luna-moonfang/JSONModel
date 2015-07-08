@@ -19,6 +19,9 @@ JSONModel is a library, which allows rapid creation of smart data models. You ca
 
 JSONModel automatically introspects your model classes and the structure of your JSON input and reduces drastically the amount of code you have to write.
 
+快速创建数据模型。
+自动解析模型类和json结构，无需太多代码。
+
 [![](http://www.touch-code-magazine.com/img/json.png)](http://www.touch-code-magazine.com/img/json.png)
 
 
@@ -49,6 +52,8 @@ If you want to read more about CocoaPods, have a look at [this short tutorial](h
 #### Source code documentation
 The source code includes class docs, which you can build yourself and import into Xcode:
 
+TODO: 安装`appledoc`工具
+
 1. If you don't already have [appledoc](http://gentlebytes.com/appledoc/) installed, install it with [homebrew](http://brew.sh/) by typing `brew install appledoc`.
 2. Install the documentation into Xcode by typing `appledoc .` in the root directory of the repository.
 3. Restart Xcode if it's already running.
@@ -63,7 +68,12 @@ Consider you have a JSON like this:
 ```
 
  * Create a new Objective-C class for your data model and make it inherit the JSONModel class. 
+ 
+   为数据模型创建oc类，继承`JSONModel`类
+ 
  * Declare properties in your header file with the name of the JSON keys:
+ 
+   把JSON的key在h文件声明成属性，m文件不动：
 
 ```objective-c
 #import "JSONModel.h"
@@ -80,6 +90,8 @@ Consider you have a JSON like this:
 There's no need to do anything in the **.m** file.
 
  * Initialize your model with data:
+ 
+   用json数据初始化模型：
 
 ```objective-c
 #import "CountryModel.h"
@@ -93,12 +105,28 @@ CountryModel* country = [[CountryModel alloc] initWithString:json error:&err];
 
 If the validation of the JSON passes you have all the corresponding properties in your model populated from the JSON. JSONModel will also try to convert as much data to the types you expect, in the example above it will:
 
+如果json有model中对应的属性，`JSONModel`会尽可能做类型转换，以上面的为例：会
+
 * convert "id" from string (in the JSON) to an int for your class
+
+  id从string转成int
+
 * just copy country's value
+
+  country从string到string，只赋值
+
 * convert dialCode from number (in the JSON) to an NSString value 
+
+  dialCode从number到NSString
+
 * finally convert isInEurope to a BOOL for your BOOL property
 
+  isInEurope转成BOOL
+
+
 And the good news is all you had to do is define the properties and their expected types.
+
+你要做的就是定义好属性和它们的类型。
 
 -------
 #### Online tutorials
@@ -205,6 +233,9 @@ Examples
 <pre>
 <b>@protocol ProductModel
 @end</b>
+// 注：通过命名和类名相同的协议名，让指定数组中元素的类型
+// 参考文章 http://blog.zephyrleaves.net
+// 和run time相关？
 
 @interface ProductModel : JSONModel
 @property (assign, nonatomic) int id;
@@ -229,6 +260,7 @@ Examples
 </table>
 
 #### Key mapping
+比如下面的例子，真正有用的属性就三个，但后两个的层次比较深，中间隔着一些无用的嵌套，这时可以用key mapping做映射，缩短路径，也可以用来改名，第一个属性从`order_id`改为`id`
 <table>
 <tr>
 <td valign="top">
@@ -324,6 +356,7 @@ Examples
 </table>
 
 #### Optional properties (i.e. can be missing or null)
+又是类型+协议的语法
 <table>
 <tr>
 <td valign="top">
@@ -395,6 +428,7 @@ Examples
 
 
 #### Lazy convert collection items from dictionaries to models
+延迟有什么用？
 <table>
 <tr>
 <td valign="top">
